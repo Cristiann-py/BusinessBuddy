@@ -1,0 +1,43 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poll Choices</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Poll Choices</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+        </ul>
+    </nav>
+    <main>
+        <form action="{% url 'polls:vote' question.id %}" method="post">
+            {% csrf_token %}
+            <fieldset>
+                <legend><h1 class="formtitle">{{ question.question_text }}</h1></legend>
+                {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+                <ul class="poll-choices-list">
+                {% for choice in question.choice_set.all %}
+                    <li>
+                        <div class="choice-container" onclick="document.getElementById('choice{{ forloop.counter }}').click();">
+                            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                            <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label>
+                        </div>
+                    </li>
+                {% endfor %}
+                </ul>
+            </fieldset>
+            <button type="submit" class="vote-button">Vote</button>
+        </form>
+        
+    </main>
+    
+</body>
+</html>

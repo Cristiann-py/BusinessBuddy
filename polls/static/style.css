@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
+
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+header {
+  background: #333;
+  color: #fff;
+  padding: 1rem 0;
+  text-align: center;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  background: #444;
+  text-align: center;
+}
+
+nav ul li {
+  display: inline;
+  margin: 0 15px;
+}
+
+nav ul li a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav ul li a:hover {
+  text-decoration: underline;
+}
+
+main {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.poll-choices-list {
+  list-style: none;
+  padding: 0;
+}
+
+.poll-choices-list li {
+  background: #eee;
+  margin: 10px 0;
+  border-radius: 5px;
+}
+
+.choice-container {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  background: #eee;
+  margin: 5px 0;
+}
+
+.choice-container:hover {
+  background: #eee;
+}
+
+.choice-container input {
+  margin-right: 10px;
+}
+
+.vote-button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background: #333;
+  color: #eee;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.vote-again-button, .back-button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  text-align: center;
+  text-decoration: none;
+}
+
+.vote-again-button:hover, .back-button:hover {
+  background: #555;
+}
+
+.polls-list {
+  list-style: none;
+  padding: 0;
+}
+
+.polls-list li {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.choice-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: #e4e4e4;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.choice-container:hover {
+  background: #d4d4d4;
+}
+
+canvas {
+    display: block;
+    width: 200%;
+    max-width: 100%;
+    margin: 10px auto;
+}
+
