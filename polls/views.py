@@ -38,21 +38,28 @@ class DetailView(generic.DetailView):
 
 def chatbot(request):
     if request.method == 'POST':
+        question_id = request.POST.get('question_id')  # Ensure you pass the question_id
         user_message = request.POST.get('message')
         user_choice = request.POST.get('user_choice')
         conversation = request.session.get('conversation', [])
+
+        # Fetch the question and its choices from the database
+        question = get_object_or_404(Question, pk=question_id)
+        poll_choices = list(question.choice_set.values_list('choice_text', flat=True))  # Get choices as a list
+        poll_question = question.question_text
 
         if user_message:
             # Append user message to conversation
             conversation.append({"role": "user", "content": user_message})
 
             # Prepare prompt for the OpenAI API
-            system_data = [ {"role": "system", "content": f"You are an argumentative chatbot who is very sassy and talks back to the user on whatever their opinion is. Clown on the users choice and be mean argue and never back down. Be firm in your abilities to shut down whatever the users opinion is. Make your responses short and simple. Take previous reponses and make a cohesive argument based off of what the user says back and what you have said previously. The user's choice: {user_choice}"} ] + conversation
+            system_data = [{"role": "system", "content": f"You are a chatbot specializing in Financial Information. The user will ask you questions about the poll they just responded to. You have their response as {user_choice}. Further, you have the poll's choices as {poll_choices}. Give as much information based on your database of the choices and the question {poll_question}. Take previous response and continue to build on what the user says. Give specific information and be as helpfull as possible. The user's choice: {user_choice}"}] + conversation
 
             try:
                 client = OpenAI(api_key=settings.OPENAI_API_KEY) 
-                response = client.chat.completions.create(model="gpt-3.5-turbo", messages=system_data)
+                response = client.chat.completions.create(model="gpt-4o-mini", messages=system_data)
                 chatbot_reply = response.choices[0].message.content
+
                 # Append bot response to conversation
                 conversation.append({"role": "assistant", "content": chatbot_reply})
 
@@ -63,6 +70,7 @@ def chatbot(request):
             except Exception as e:
                 return JsonResponse({'response': f'Error: {str(e)}'}, status=500)
     return JsonResponse({'response': 'No message received'}, status=400)
+
 
 
 
