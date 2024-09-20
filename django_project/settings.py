@@ -25,7 +25,7 @@ OPENAI_API_KEY = 'sk-proj-CnM7_PrffvIPBQaS-yWMC69WINH9Q64Y8S9W5GMHw9tORs0GZ4HSYA
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [".replit.dev", ".replit.app"]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.cvapps.net','.replit.dev', '.replit.app']
 CSRF_TRUSTED_ORIGINS = ["https://*.replit.dev", "https://*.replit.app"]
 
 # Application definition
