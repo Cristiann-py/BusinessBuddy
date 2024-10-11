@@ -1,0 +1,16 @@
+<h1>Quiz Results</h1>
+<p>
+    You scored {{ score }}% ({{ correct_answers }} out of {{ total_questions }}
+    correct).
+</p>
+
+{% for question in questions %}
+<div>
+    <h3>{{ question.question_text }}</h3>
+    <p>Your answer: {{ user_answers[question.id].choice_text }}</p>
+    <p>
+        {% if user_answers[question.id].is_correct %}Correct!{% else
+        %}Incorrect{% endif %}
+    </p>
+</div>
+{% endfor %}

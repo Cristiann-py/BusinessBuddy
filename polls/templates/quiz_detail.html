@@ -1,0 +1,23 @@
+{% load static %}
+
+<h1>{{ quiz.quiz_title }}</h1>
+<form method="post">
+    {% csrf_token %} {% for question in questions %}
+    <div>
+        <h3>{{ question.question_text }}</h3>
+        <ul>
+            {% for choice in question.choices.all %}
+            <li>
+                <input
+                    type="radio"
+                    name="question_{{ question.id }}"
+                    value="{{ choice.id }}"
+                />
+                {{ choice.choice_text }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
+    <button type="submit">Submit Quiz</button>
+</form>

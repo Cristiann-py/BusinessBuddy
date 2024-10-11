@@ -140,3 +140,11 @@ canvas {
     margin: 10px auto;
 }
 
+.main-container {
+  display: flex;
+  justify-content: space-between;
+}
+.polls-section, .quizzes-section {
+  width: 45%;
+}
+

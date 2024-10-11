@@ -1,0 +1,36 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Quizzes</title>
+        <link rel="stylesheet" href="{% static 'style.css' %}" />
+    </head>
+    <body>
+        <header>
+            <h1>Available Quizzes</h1>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+            </ul>
+        </nav>
+        <main>
+            {% if latest_quiz_list %}
+            <ul>
+                {% for quiz in latest_quiz_list %}
+                <li>
+                    <a href="{% url 'quizzes:detail' quiz.id %}"
+                        >{{ quiz.quiz_title }}</a
+                    >
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No quizzes available at the moment.</p>
+            {% endif %}
+        </main>
+    </body>
+</html>
