@@ -12,9 +12,4 @@ urlpatterns = [
     path('polls/<int:question_id>/vote/', views.vote, name='vote'),
     path('polls/chatbot/', views.chatbot, name='polls_chatbot'),
 
-    # Quizzes URLs
-    path('quizzes/', views.QuizIndexView.as_view(), name="quizzes_index"),
-    path('quizzes/<int:pk>/',
-         views.QuizDetailView.as_view(),
-         name="quizzes_detail"),
 ]

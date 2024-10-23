@@ -18,55 +18,23 @@
             </ul>
         </nav>
         <main>
-            <div class="main-container">
-                <!-- Polls Section -->
-                <section class="polls-section">
-                    <h2>Polls</h2>
-                    {% if latest_question_list %}
-                    <ul class="polls-list">
-                        {% for question in latest_question_list %}
-                        <li>
-                            <div
-                                class="choice-container"
-                                onclick="window.location.href='{% url 'polls:polls_detail' question.id %}'"
-                            >
-                                {{ question.question_text }}
-                            </div>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                    {% else %}
-                    <p>No polls are available.</p>
-                    {% endif %}
-                </section>
-
-                <!-- Quizzes Section -->
-                <section class="quizzes-section">
-                    <h2>Quizzes</h2>
-                    <p>
-                        There are {{ latest_quiz_list|length }} quizzes in the
-                        list.
-                    </p>
-                    <!-- Debugging -->
-
-                    {% if latest_quiz_list %}
-                    <ul class="quizzes-list">
-                        {% for quiz in latest_quiz_list %}
-                        <li>
-                            <div
-                                class="quiz-container"
-                                onclick="window.location.href='{% url 'polls:quizzes_detail' quiz.id %}'"
-                            >
-                                {{ quiz.quiz_title }}
-                            </div>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                    {% else %}
-                    <p>No quizzes are available.</p>
-                    {% endif %}
-                </section>
-            </div>
+            <center><h2>Polls</h2></center>
+            {% if latest_question_list %}
+            <ul class="polls-list">
+                {% for question in latest_question_list %}
+                <li>
+                    <div
+                        class="choice-container"
+                        onclick="window.location.href='{% url 'polls:polls_detail' question.id %}'"
+                    >
+                        {{ question.question_text }}
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No polls are available.</p>
+            {% endif %}
         </main>
     </body>
 </html>

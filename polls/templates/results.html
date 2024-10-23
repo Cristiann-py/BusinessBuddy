@@ -179,7 +179,7 @@
                         data: {
                             'message': message,
                             'user_choice': userChoice,
-                            'question_id': '{{ question.id }}',  // Include question_id in the data
+                            'question_id': '{{ question.id }}',  
                             'csrfmiddlewaretoken': '{{ csrf_token }}'
                         },
                         success: function(response) {
@@ -194,7 +194,6 @@
                     });
                 });
 
-                // Send message on pressing Enter
                 $('#input-field').on('keydown', function(e) {
                     if (e.key === 'Enter') {
                         $('#send-button').click();

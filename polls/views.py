@@ -13,32 +13,32 @@ from .models import Choice, Question
 from .models import Quiz, QuizQuestion
 from django.views import View
 
+def index(request):
+    # Fetch the latest polls and quizzes
+    latest_question_list = Question.objects.filter(
+        pub_date__lte=now()).order_by('-pub_date')[:5]
+    
+
+    context = {
+        'latest_question_list': latest_question_list,
+    }
+    return render(request, 'index.html', context)
 
 # Polls Index View
 class IndexView(generic.ListView):
     template_name = "index.html"
     context_object_name = "latest_question_list"
-
+    
     def get_queryset(self):
         """
         Return the last five published questions (not including those set to be
         published in the future).
         """
+        
         return Question.objects.filter(
             pub_date__lte=timezone.now()).order_by("-pub_date")[:5]
 
 
-def index(request):
-    latest_question_list = Question.objects.filter(
-        pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
-    latest_quiz_list = Quiz.objects.filter(
-        pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
-
-    context = {
-        'latest_question_list': latest_question_list,
-        'latest_quiz_list': latest_quiz_list,
-    }
-    return render(request, 'index.html', context)
 
 
 class DetailView(generic.DetailView):
@@ -55,23 +55,20 @@ class DetailView(generic.DetailView):
 def chatbot(request):
     if request.method == 'POST':
         question_id = request.POST.get(
-            'question_id')  # Ensure you pass the question_id
+            'question_id')  
         user_message = request.POST.get('message')
         user_choice = request.POST.get('user_choice')
         conversation = request.session.get('conversation', [])
 
-        # Fetch the question and its choices from the database
         question = get_object_or_404(Question, pk=question_id)
         poll_choices = list(
             question.choice_set.values_list(
-                'choice_text', flat=True))  # Get choices as a list
+                'choice_text', flat=True))  
         poll_question = question.question_text
 
         if user_message:
-            # Append user message to conversation
             conversation.append({"role": "user", "content": user_message})
 
-            # Prepare prompt for the OpenAI API
             system_data = [{
                 "role":
                 "system",
@@ -93,13 +90,11 @@ def chatbot(request):
                                                           messages=system_data)
                 chatbot_reply = response.choices[0].message.content
 
-                # Append bot response to conversation
                 conversation.append({
                     "role": "assistant",
                     "content": chatbot_reply
                 })
 
-                # Save conversation back to session
                 request.session['conversation'] = conversation
 
                 return JsonResponse({
@@ -117,7 +112,6 @@ class ResultsView(generic.DetailView):
     template_name = "results.html"
 
     def get_object(self):
-        # Here, we're overriding the get_object to fetch the object using question_id
         question_id = self.kwargs.get('question_id')
         return get_object_or_404(Question, pk=question_id)
 
@@ -149,55 +143,7 @@ def vote(request, question_id):
             f"?choice={selected_choice.choice_text}")
 
 
-# Quiz Views
 
-
-# Quiz Views
-class QuizIndexView(generic.ListView):
-    template_name = 'quiz_index.html'
-    context_object_name = 'latest_quiz_list'
-
-    def get_queryset(self):
-        return Quiz.objects.filter(
-            pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
-
-
-class QuizDetailView(View):
-
-    def get(self, request, pk):
-        quiz = get_object_or_404(Quiz, pk=pk)
-        questions = quiz.questions.prefetch_related('choices')
-        return render(request, 'quiz_detail.html', {
-            'quiz': quiz,
-            'questions': questions
-        })
-
-    def post(self, request, pk):
-        quiz = get_object_or_404(Quiz, pk=pk)
-        questions = quiz.questions.prefetch_related('choices')
-        user_answers = {}
-        correct_answers = 0
-
-        for question in questions:
-            user_choice_id = request.POST.get(f'question_{question.id}')
-            if user_choice_id:
-                user_choice = get_object_or_404(QuizChoice, id=user_choice_id)
-                user_answers[question.id] = user_choice
-                if user_choice.is_correct:
-                    correct_answers += 1
-
-        total_questions = questions.count()
-        score = (correct_answers / total_questions) * 100
-
-        return render(
-            request, 'quiz_results.html', {
-                'quiz': quiz,
-                'questions': questions,
-                'user_answers': user_answers,
-                'score': score,
-                'correct_answers': correct_answers,
-                'total_questions': total_questions
-            })
 
 
 def results(request, question_id):
